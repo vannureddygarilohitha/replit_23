@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "SkillTrack"
+description = "SkillTrack is an employee skill management platform for HR and learning teams to manage workforce profiles, skill proficiency, certifications, training, skill gaps, recommendations, and analytics."
+version = "1.0.0"
+id = "artifacts/skilltrack"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18850
+
+[services.development]
+run = "pnpm --filter @workspace/skilltrack run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/skilltrack", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/skilltrack/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18850"
+BASE_PATH = "/"
