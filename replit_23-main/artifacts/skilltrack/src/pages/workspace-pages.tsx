@@ -45,6 +45,7 @@ import {
 import { logoutUser } from '@/lib/auth-service';
 import type { AppSettings, CertificationInput, CourseInput, EmployeeInput, SkillInput, SkillLevel } from '@/lib/types';
 import { useWorkspace } from '@/lib/use-workspace';
+import { exportCsv, exportJson } from '@/lib/export-utils';
 
 type AnyRow = Record<string, any>;
 const arr = (d: AnyRow | null, ...keys: string[]): AnyRow[] => {
@@ -787,9 +788,36 @@ function Employees({ data, refresh }: { data: AnyRow | null; refresh: () => void
         title="Employees"
         subtitle="Find a person, understand their role, and keep their growth plan moving."
         action={
-          <Button onClick={() => setDialog(true)} testId="button-add-employee">
-            <Plus size={15} /> Add employee
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              secondary
+              onClick={() => {
+                const rows = filtered.map((e) => [
+                  e.employeeId || e.id || '',
+                  nameOf(e),
+                  e.email || '',
+                  e.jobRole || '',
+                  e.department || '',
+                  e.location || '',
+                  e.status || 'Active',
+                  e.manager || '',
+                  e.joiningDate || '',
+                ]);
+                exportCsv(
+                  `skilltrack-employees-${new Date().toISOString().slice(0, 10)}.csv`,
+                  ['Employee ID', 'Full Name', 'Email', 'Role', 'Department', 'Location', 'Status', 'Manager', 'Joining Date'],
+                  rows
+                );
+                toast.success(`Exported ${filtered.length} employees to CSV`);
+              }}
+              testId="button-export-employees"
+            >
+              <Download size={14} /> Export CSV
+            </Button>
+            <Button onClick={() => setDialog(true)} testId="button-add-employee">
+              <Plus size={15} /> Add employee
+            </Button>
+          </div>
         }
       />
       <Panel className="overflow-hidden">
@@ -1278,9 +1306,31 @@ function Skills({ data, refresh }: { data: AnyRow | null; refresh: () => void })
         title="Skills library"
         subtitle="The shared language for what your people know — and what they are ready to learn."
         action={
-          <Button onClick={() => setDialog(true)} testId="button-add-skill">
-            <Plus size={15} /> Add a skill
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              secondary
+              onClick={() => {
+                const rows = filtered.map((s) => [
+                  s.id || '',
+                  s.name || '',
+                  s.category || '',
+                  s.description || '',
+                ]);
+                exportCsv(
+                  `skilltrack-skills-${new Date().toISOString().slice(0, 10)}.csv`,
+                  ['Skill ID', 'Skill Name', 'Category', 'Description'],
+                  rows
+                );
+                toast.success(`Exported ${filtered.length} skills to CSV`);
+              }}
+              testId="button-export-skills"
+            >
+              <Download size={14} /> Export CSV
+            </Button>
+            <Button onClick={() => setDialog(true)} testId="button-add-skill">
+              <Plus size={15} /> Add a skill
+            </Button>
+          </div>
         }
       />
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -1439,9 +1489,32 @@ function Certifications({ data, refresh }: { data: AnyRow | null; refresh: () =>
         title="Certifications"
         subtitle="Keep professional credentials visible, current, and ahead of expiry."
         action={
-          <Button onClick={() => setDialog(true)}>
-            <Plus size={15} /> Add certification
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              secondary
+              onClick={() => {
+                const rows = list.map((c) => [
+                  c.name || '',
+                  c.provider || '',
+                  c.employeeName || employees.find((e) => String(e.id ?? e.employeeId) === String(c.employeeId))?.fullName || '',
+                  c.issueDate || '',
+                  c.expiryDate || '',
+                  getStatus(c),
+                ]);
+                exportCsv(
+                  `skilltrack-certifications-${new Date().toISOString().slice(0, 10)}.csv`,
+                  ['Certification Name', 'Provider', 'Employee Holder', 'Issue Date', 'Expiry Date', 'Status'],
+                  rows
+                );
+                toast.success(`Exported ${list.length} certifications to CSV`);
+              }}
+            >
+              <Download size={14} /> Export CSV
+            </Button>
+            <Button onClick={() => setDialog(true)}>
+              <Plus size={15} /> Add certification
+            </Button>
+          </div>
         }
       />
 
@@ -1876,6 +1949,28 @@ function Training({ data, refresh }: { data: AnyRow | null; refresh: () => void 
         subtitle="A practical catalogue of learning, with progress that stays connected to the people doing it."
         action={
           <div className="flex items-center gap-2">
+            <Button
+              secondary
+              onClick={() => {
+                const rows = list.map((c) => [
+                  c.id || '',
+                  c.name || '',
+                  c.category || '',
+                  c.instructor || '',
+                  c.duration || '',
+                  enrollments.filter((e) => String(e.courseId) === String(c.id)).length,
+                  c.description || '',
+                ]);
+                exportCsv(
+                  `skilltrack-training-${new Date().toISOString().slice(0, 10)}.csv`,
+                  ['Course ID', 'Course Name', 'Category', 'Instructor', 'Duration', 'Enrollments', 'Description'],
+                  rows
+                );
+                toast.success(`Exported ${list.length} courses to CSV`);
+              }}
+            >
+              <Download size={14} /> Export CSV
+            </Button>
             <Button onClick={() => setEnrollCourse(courses[0] || {})}>
               <UserPlus size={15} /> Enroll learner
             </Button>
@@ -2204,9 +2299,25 @@ function Analytics({ data }: { data: AnyRow | null }) {
         title="Analytics"
         subtitle="Compare capability investment and learning momentum across departments."
         action={
-          <Button secondary onClick={() => window.print()}>
-            <Download size={14} /> Export view
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              secondary
+              onClick={() => {
+                exportJson(`skilltrack-analytics-summary-${new Date().toISOString().slice(0, 10)}.json`, {
+                  exportedAt: new Date().toISOString(),
+                  totalEmployees: people.length,
+                  totalDepartments: depts.length,
+                  departments: groups,
+                });
+                toast.success('Analytics summary downloaded as JSON');
+              }}
+            >
+              <Download size={14} /> Export JSON
+            </Button>
+            <Button secondary onClick={() => window.print()}>
+              <Eye size={14} /> Print view
+            </Button>
+          </div>
         }
       />
 
@@ -2895,6 +3006,108 @@ function SettingsPage({ data, refresh }: { data: AnyRow | null; refresh: () => v
           </div>
           <div className="mt-4 flex justify-end">
             <Button onClick={() => void savePrefs()}>Save preferences</Button>
+          </div>
+        </Panel>
+
+        <Panel className="p-5 md:p-6 xl:col-span-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+            <div>
+              <h2 className="font-[Manrope] text-base font-extrabold text-white flex items-center gap-2">
+                <Download size={18} className="text-[#F26207]" /> Data & File Exports
+              </h2>
+              <p className="mt-1 text-xs text-slate-400">Download and backup your workforce records anytime as spreadsheets or JSON.</p>
+            </div>
+            <Button
+              onClick={() => {
+                exportJson(`skilltrack-full-backup-${new Date().toISOString().slice(0, 10)}.json`, data);
+                toast.success('Complete workspace backup downloaded as JSON');
+              }}
+            >
+              <Download size={15} /> Download Full Backup (JSON)
+            </Button>
+          </div>
+
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <button
+              onClick={() => {
+                const emps = arr(data, 'employees', 'people');
+                const rows = emps.map((e) => [
+                  e.employeeId || e.id || '',
+                  nameOf(e),
+                  e.email || '',
+                  e.jobRole || '',
+                  e.department || '',
+                  e.location || '',
+                  e.status || 'Active',
+                  e.manager || '',
+                  e.joiningDate || '',
+                ]);
+                exportCsv(`skilltrack-employees-${new Date().toISOString().slice(0, 10)}.csv`, ['Employee ID', 'Full Name', 'Email', 'Role', 'Department', 'Location', 'Status', 'Manager', 'Joining Date'], rows);
+                toast.success('Employees CSV downloaded');
+              }}
+              className="dynamic-btn flex items-center justify-between p-3.5 rounded-xl border border-white/10 bg-slate-950/60 hover:bg-slate-800/80 hover:border-orange-500/40 text-left transition cursor-pointer"
+            >
+              <div>
+                <div className="text-xs font-bold text-white">Employees Directory</div>
+                <div className="text-[10px] text-slate-400 mt-0.5">Spreadsheet (.CSV)</div>
+              </div>
+              <Download size={14} className="text-orange-400" />
+            </button>
+
+            <button
+              onClick={() => {
+                const certs = arr(data, 'certifications');
+                const emps = arr(data, 'employees', 'people');
+                const rows = certs.map((c) => [
+                  c.name || '',
+                  c.provider || '',
+                  c.employeeName || emps.find((e) => String(e.id ?? e.employeeId) === String(c.employeeId))?.fullName || '',
+                  c.issueDate || '',
+                  c.expiryDate || '',
+                ]);
+                exportCsv(`skilltrack-certifications-${new Date().toISOString().slice(0, 10)}.csv`, ['Certification Name', 'Provider', 'Employee', 'Issue Date', 'Expiry Date'], rows);
+                toast.success('Certifications CSV downloaded');
+              }}
+              className="dynamic-btn flex items-center justify-between p-3.5 rounded-xl border border-white/10 bg-slate-950/60 hover:bg-slate-800/80 hover:border-orange-500/40 text-left transition cursor-pointer"
+            >
+              <div>
+                <div className="text-xs font-bold text-white">Certifications Register</div>
+                <div className="text-[10px] text-slate-400 mt-0.5">Spreadsheet (.CSV)</div>
+              </div>
+              <Download size={14} className="text-orange-400" />
+            </button>
+
+            <button
+              onClick={() => {
+                const skills = arr(data, 'skills');
+                const rows = skills.map((s) => [s.id || '', s.name || '', s.category || '', s.description || '']);
+                exportCsv(`skilltrack-skills-${new Date().toISOString().slice(0, 10)}.csv`, ['Skill ID', 'Skill Name', 'Category', 'Description'], rows);
+                toast.success('Skills CSV downloaded');
+              }}
+              className="dynamic-btn flex items-center justify-between p-3.5 rounded-xl border border-white/10 bg-slate-950/60 hover:bg-slate-800/80 hover:border-orange-500/40 text-left transition cursor-pointer"
+            >
+              <div>
+                <div className="text-xs font-bold text-white">Skills Matrix</div>
+                <div className="text-[10px] text-slate-400 mt-0.5">Spreadsheet (.CSV)</div>
+              </div>
+              <Download size={14} className="text-orange-400" />
+            </button>
+
+            <button
+              onClick={() => {
+                const courses = arr(data, 'courses');
+                const rows = courses.map((c) => [c.id || '', c.name || '', c.category || '', c.instructor || '', c.duration || '', c.description || '']);
+                exportCsv(`skilltrack-training-${new Date().toISOString().slice(0, 10)}.csv`, ['Course ID', 'Course Name', 'Category', 'Instructor', 'Duration', 'Description'], rows);
+                toast.success('Training Courses CSV downloaded');
+              }}
+              className="dynamic-btn flex items-center justify-between p-3.5 rounded-xl border border-white/10 bg-slate-950/60 hover:bg-slate-800/80 hover:border-orange-500/40 text-left transition cursor-pointer"
+            >
+              <div>
+                <div className="text-xs font-bold text-white">Training Catalogue</div>
+                <div className="text-[10px] text-slate-400 mt-0.5">Spreadsheet (.CSV)</div>
+              </div>
+              <Download size={14} className="text-orange-400" />
+            </button>
           </div>
         </Panel>
       </div>
