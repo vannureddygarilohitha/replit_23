@@ -1,0 +1,874 @@
+# MASTER PROMPT — BUILD THE COMPLETE FULL-STACK PROJECT
+
+Build a complete, polished, production-style full-stack web application called:
+
+# SkillTrack — Employee Skill Management Platform
+
+## 1. PROJECT OBJECTIVE
+
+Build a realistic enterprise dashboard that helps organizations:
+
+- Track employees
+- Track employee skills
+- Track skill proficiency levels
+- Track certifications
+- Track certification expiry dates
+- Track employee training requirements
+- Identify skill gaps
+- Monitor employee learning progress
+- View department-level skill analytics
+- Recommend training based on skill gaps
+- Monitor upcoming certification expirations
+- Manage employee profiles and career development
+
+This project is for an Employment & Career problem statement.
+
+The final application must look like a **real SaaS product used by an HR/L&D department**, not like a basic college CRUD project.
+
+The UI should be modern, professional, responsive, attractive, realistic, and presentation-ready.
+
+IMPORTANT:
+Build the application completely in ONE implementation.
+Do NOT leave placeholder pages, broken buttons, fake navigation, TODO comments, or unfinished functionality.
+
+Prioritize a working MVP with polished UI and realistic functionality over unnecessary advanced features.
+
+---
+
+# 2. TECHNOLOGY STACK
+
+Use:
+
+Frontend:
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- shadcn/ui or similarly polished reusable UI components
+- Lucide React icons
+- Recharts for charts
+
+Backend:
+- Supabase
+- Supabase PostgreSQL
+- Supabase authentication if practical
+
+Database:
+- Supabase PostgreSQL
+
+Do NOT create a separate Node/Express backend unless absolutely necessary.
+
+Use Supabase directly from the React application through a clean service/data-access layer.
+
+---
+
+# 3. SUPABASE CONFIGURATION
+
+Use these environment variables:
+
+NEXT_PUBLIC_SUPABASE_URL=https://jddyqokjaqghtbknvsna.supabase.co
+
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_mD9Bz_auOz13JhgP8IjLmg__n7FzXSl
+
+IMPORTANT:
+- Store these values in Replit Secrets / environment variables.
+- Do not hard-code them throughout the source code.
+- Create a `.env.example` file showing the required variable names.
+- Never ask me repeatedly for these keys.
+- Never use a Supabase service_role key in frontend code.
+
+If this project is using Vite, also support the equivalent Vite environment variable names if necessary:
+
+VITE_SUPABASE_URL
+VITE_SUPABASE_PUBLISHABLE_KEY
+
+Make the Supabase client configuration work correctly with the environment variables available in Replit.
+
+---
+
+# 4. APPLICATION BRANDING
+
+Application name:
+
+SkillTrack
+
+Tagline:
+
+"Empower Skills. Build Better Teams."
+
+Use a professional enterprise SaaS visual identity.
+
+Logo:
+Create a simple text/icon logo using a combination of:
+- skill/network concept
+- people/team concept
+- upward growth concept
+
+Use the SkillTrack name in the sidebar/header.
+
+The design should feel similar in quality to modern HR platforms such as enterprise SaaS dashboards.
+
+Do not copy any existing company's branding.
+
+---
+
+# 5. MAIN APPLICATION LAYOUT
+
+Create a professional dashboard layout.
+
+Desktop:
+
+LEFT SIDEBAR
+- SkillTrack logo
+- Dashboard
+- Employees
+- Skills
+- Certifications
+- Training
+- Skill Gaps
+- Analytics
+- Settings
+
+BOTTOM OF SIDEBAR:
+- User profile
+- HR Admin
+- Organization name
+
+MAIN AREA:
+- Top header
+- Search
+- Notifications
+- User profile
+- Page content
+
+The sidebar should remain visually consistent throughout the application.
+
+On mobile:
+- Responsive sidebar
+- Hamburger menu
+- Responsive cards/tables
+- No horizontal overflow
+
+---
+
+# 6. DASHBOARD PAGE
+
+Create an impressive HR analytics dashboard.
+
+Header:
+
+"Good morning, HR Admin"
+"Here's your organization's workforce skill overview."
+
+Top KPI cards:
+
+1. Total Employees
+Example:
+248
+
+2. Skills Tracked
+Example:
+86
+
+3. Active Certifications
+Example:
+174
+
+4. Training Completion
+Example:
+78%
+
+5. Critical Skill Gaps
+Example:
+23
+
+Use icons, trend indicators, and small supporting text.
+
+Example:
++8.2% from last month
+
+Do not make the dashboard look static.
+
+Use realistic database-driven values whenever data exists.
+
+---
+
+# 7. DASHBOARD CHARTS
+
+Create multiple professional charts.
+
+## Workforce Skill Distribution
+
+Donut/Pie chart showing:
+
+- Technical
+- Communication
+- Leadership
+- Domain
+- Management
+
+## Training Completion
+
+Bar chart:
+
+Department | Completion
+
+Engineering
+HR
+Marketing
+Finance
+Operations
+
+## Skill Gap Overview
+
+Horizontal bar chart:
+
+Skill | Employees with Gap
+
+React
+Python
+Data Analytics
+Cloud Computing
+Leadership
+
+## Certification Status
+
+Donut chart:
+
+- Active
+- Expiring Soon
+- Expired
+
+## Monthly Training Progress
+
+Line chart showing training completion over the last 6 months.
+
+Charts must use Recharts.
+
+Make charts responsive and visually polished.
+
+---
+
+# 8. RECENT ACTIVITY SECTION
+
+Add a realistic "Recent Activity" section.
+
+Examples:
+
+"Ananya completed React Advanced certification"
+
+"Rahul enrolled in AWS Cloud Fundamentals"
+
+"Priya's Python certification expires in 21 days"
+
+"Arjun completed Leadership Essentials training"
+
+"5 employees were identified with Data Analytics skill gaps"
+
+Show:
+- avatar
+- employee name
+- activity
+- timestamp
+- status/icon
+
+---
+
+# 9. EMPLOYEES PAGE
+
+Create a complete employee management page.
+
+Header:
+
+"Employees"
+
+Subtitle:
+
+"Manage workforce skills, certifications and development."
+
+Buttons:
+
++ Add Employee
+
+Filters:
+- Department
+- Role
+- Skill
+- Certification
+- Skill Level
+
+Search employee.
+
+Employee table columns:
+
+- Employee
+- Employee ID
+- Department
+- Role
+- Skills
+- Certifications
+- Training Progress
+- Skill Gap
+- Status
+- Actions
+
+Example employees:
+
+Ananya Sharma
+EMP001
+Engineering
+Frontend Developer
+
+Rahul Kumar
+EMP002
+Engineering
+Backend Developer
+
+Priya Reddy
+EMP003
+HR
+HR Specialist
+
+Arjun Mehta
+EMP004
+Engineering
+Data Analyst
+
+Sneha Rao
+EMP005
+Marketing
+Marketing Executive
+
+Include at least 10-15 realistic demo employees if the database is empty.
+
+Use generated avatars/initials instead of requiring image uploads.
+
+---
+
+# 10. ADD EMPLOYEE
+
+Create a functional modal/form.
+
+Fields:
+
+- Full Name
+- Employee ID
+- Email
+- Phone
+- Department
+- Job Role
+- Joining Date
+- Manager
+- Location
+- Employment Status
+
+When submitted:
+- Validate form
+- Save employee to Supabase
+- Show success notification
+- Refresh employee list
+- Handle errors properly
+
+---
+
+# 11. EMPLOYEE PROFILE PAGE
+
+Clicking an employee should open a detailed employee profile.
+
+Header:
+
+Employee name
+Role
+Department
+Employee ID
+Status
+
+Show:
+
+## Profile Information
+
+Email
+Phone
+Department
+Manager
+Location
+Joining Date
+
+## Skill Overview
+
+Display skills as cards or progress bars.
+
+Example:
+
+React
+Advanced
+92%
+
+TypeScript
+Intermediate
+72%
+
+UI/UX
+Intermediate
+68%
+
+Communication
+Advanced
+85%
+
+Leadership
+Beginner
+35%
+
+## Certifications
+
+Show:
+
+Certification name
+Provider
+Issue date
+Expiry date
+Status
+
+Example:
+
+AWS Cloud Practitioner
+Amazon Web Services
+Expires: Dec 15, 2026
+Active
+
+## Training
+
+Show:
+
+Course
+Progress
+Due Date
+Status
+
+## Skill Gap
+
+Show missing/weak skills.
+
+Example:
+
+Cloud Architecture
+Current: Beginner
+Required: Intermediate
+
+Gap:
+High Priority
+
+Recommended Training:
+AWS Solutions Architect Fundamentals
+
+Add a "View Development Plan" button.
+
+---
+
+# 12. SKILLS PAGE
+
+Create a skills management page.
+
+Header:
+
+"Skills Library"
+
+Show total skills.
+
+Categories:
+
+- Technical
+- Soft Skills
+- Leadership
+- Domain
+- Tools
+- Management
+
+Skill cards/table:
+
+Skill
+Category
+Employees
+Average Proficiency
+Demand
+Gap Level
+
+Example:
+
+React
+Technical
+42 employees
+78%
+High
+Medium
+
+Python
+Technical
+58 employees
+71%
+Very High
+High
+
+Communication
+Soft Skill
+132 employees
+82%
+High
+Low
+
+Leadership
+Leadership
+36 employees
+61%
+High
+High
+
+Allow:
+- Search
+- Category filter
+- Add skill
+
+---
+
+# 13. SKILL PROFICIENCY LEVELS
+
+Use standardized levels:
+
+1. Beginner
+2. Basic
+3. Intermediate
+4. Advanced
+5. Expert
+
+Display proficiency visually.
+
+Use progress bars or badges.
+
+Do not use confusing numerical values alone.
+
+---
+
+# 14. CERTIFICATIONS PAGE
+
+Create a certification management dashboard.
+
+KPIs:
+
+Active Certifications
+Expiring Soon
+Expired
+Employees Certified
+
+Table:
+
+Employee
+Certification
+Provider
+Issue Date
+Expiry Date
+Status
+
+Statuses:
+
+Active
+Expiring Soon
+Expired
+
+Use color-coded badges.
+
+Add filters:
+
+- Status
+- Provider
+- Department
+- Expiry period
+
+Add button:
+
++ Add Certification
+
+---
+
+# 15. CERTIFICATION ALERTS
+
+Create an "Expiring Soon" section.
+
+Example:
+
+AWS Cloud Practitioner
+Rahul Kumar
+Expires in 14 days
+
+Google Data Analytics
+Ananya Sharma
+Expires in 28 days
+
+Azure Fundamentals
+Arjun Mehta
+Expires in 45 days
+
+Show an alert icon.
+
+Add:
+"Send Reminder"
+
+This can initially display a success toast instead of implementing actual email delivery.
+
+---
+
+# 16. TRAINING PAGE
+
+Create a training management system.
+
+Top cards:
+
+Total Courses
+Active Enrollments
+Completion Rate
+Overdue Training
+
+Training table:
+
+Course
+Category
+Employees Enrolled
+Completion
+Due Date
+Status
+
+Example courses:
+
+React Advanced Development
+Cloud Fundamentals
+Data Analytics with Python
+Leadership Essentials
+Effective Communication
+Cybersecurity Awareness
+
+Add:
+
++ Create Training
+
+---
+
+# 17. TRAINING DETAILS
+
+When clicking a training course, show:
+
+Course Name
+Description
+Instructor
+Duration
+Skill Category
+Required Skills
+
+Employee enrollment list.
+
+Show progress:
+
+0%
+25%
+50%
+75%
+100%
+
+Allow updating completion status.
+
+---
+
+# 18. SKILL GAP PAGE
+
+This is one of the MOST IMPORTANT pages.
+
+Create a professional "Skill Gap Analysis" dashboard.
+
+Purpose:
+
+Identify the difference between:
+- Current employee skills
+- Required skills for their role
+
+Show KPI cards:
+
+Critical Gaps
+High Priority
+Medium Priority
+Resolved Gaps
+
+Table:
+
+Employee
+Role
+Skill
+Current Level
+Required Level
+Gap
+Priority
+Recommended Training
+
+Example:
+
+Rahul Kumar
+Backend Developer
+Cloud Architecture
+Basic
+Advanced
+Large Gap
+Critical
+AWS Solutions Architect
+
+Ananya Sharma
+Frontend Developer
+TypeScript
+Intermediate
+Advanced
+Medium Gap
+High
+Advanced TypeScript
+
+Use priority badges:
+
+Critical
+High
+Medium
+Low
+
+---
+
+# 19. AUTOMATIC TRAINING RECOMMENDATIONS
+
+When an employee has a skill gap, display a recommended training course.
+
+Example:
+
+Skill Gap:
+Python
+
+Required:
+Advanced
+
+Current:
+Intermediate
+
+Recommendation:
+"Advanced Python for Data Professionals"
+
+Button:
+"Enroll Employee"
+
+When clicked:
+- Create training enrollment record
+- Update UI
+- Show success toast
+
+Use rule-based recommendations initially.
+
+Do NOT depend on an external AI API for the core functionality.
+
+---
+
+# 20. ANALYTICS PAGE
+
+Create a professional analytics page.
+
+Sections:
+
+## Workforce Skills
+
+Show:
+- Most common skills
+- Highest skill gaps
+- Average proficiency
+
+## Department Comparison
+
+Compare departments:
+
+Engineering
+HR
+Marketing
+Finance
+Operations
+
+Metrics:
+- Employees
+- Average skill score
+- Training completion
+- Certification coverage
+- Skill gaps
+
+## Top Skill Gaps
+
+Show ranking.
+
+## Training ROI / Progress
+
+Show:
+- Courses completed
+- Skills improved
+- Certifications gained
+- Skill gaps resolved
+
+Use charts.
+
+---
+
+# 21. SETTINGS PAGE
+
+Create a realistic settings page.
+
+Sections:
+
+Profile
+Organization
+Notifications
+Skill Levels
+Training Preferences
+
+Notification settings:
+
+Certification expiry alerts
+Training reminders
+Skill gap alerts
+Weekly HR summary
+
+Use functional toggle switches.
+
+---
+
+# 22. DATABASE SCHEMA
+
+Create the Supabase PostgreSQL schema.
+
+Tables:
+
+## employees
+
+id
+employee_id
+full_name
+email
+phone
+department
+job_role
+joining_date
+manager
+location
+status
+avatar_url
+created_at
+updated_at
+
+## skills
+
+id
+name
+category
+description
+created_at
+
+## employee_skills
+
+id
+employee_id
